@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="75dip"
+    android:orientation="vertical"
+    android:id="@+id/new_die">"
+    
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="30dip"
+	    android:orientation="horizontal" >
+	    <TextView
+	        android:text="@string/name" 
+		    android:layout_width="wrap_content"
+		    android:layout_height="match_parent" 
+        	android:textSize="12sp"
+		    android:gravity="center" />
+	    <EditText 
+	        android:id="@+id/name"
+		    android:layout_width="0dip"
+		    android:layout_weight="1"
+		    android:layout_height="match_parent"
+        	android:textSize="12sp" />
+	</LinearLayout>
+    
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="45dip"
+	    android:orientation="horizontal" >
+	    <Button
+	        android:layout_width="30dip"
+	        android:layout_height="wrap_content"
+	        android:layout_margin="10dip"
+	        android:text="@string/remove_dice"
+	        android:onClick="remove_dice"
+	        android:background="#DD0000"
+	        />
+	    <EditText 
+	        android:id="@+id/num_dice"
+		    android:layout_width="40dip"
+		    android:layout_height="match_parent"
+		    android:textSize="12sp"
+		    android:gravity="center" />
+	    <TextView 
+	        android:text="@string/dice_char" 
+		    android:layout_width="40dip"
+		    android:layout_height="match_parent"
+		    android:textSize="12sp"
+		    android:gravity="center" />
+	    <EditText 
+		    android:id="@+id/dice_sides"
+		    android:layout_width="40dip"
+		    android:layout_height="match_parent"
+		    android:textSize="12sp"
+		    android:gravity="center" />
+	    <TextView 
+	        android:text="@string/plus_char" 
+		    android:layout_width="40dip"
+		    android:layout_height="match_parent"
+		    android:textSize="12sp"
+		    android:gravity="center" />
+	    <EditText 
+		    android:id="@+id/bonus"
+		    android:layout_width="40dip"
+		    android:layout_height="match_parent"
+		    android:textSize="12sp"
+		    android:gravity="center" />
+	    <LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="match_parent"
+		    android:orientation="vertical">
+	        <CheckBox
+	            android:id="@+id/contingent"
+			    android:layout_width="wrap_content"
+			    android:layout_height="20dip"
+	            android:text="@string/contingent"
+	        	android:textSize="10sp"
+	            />
+	        <CheckBox
+	            android:id="@+id/all_bonus"
+			    android:layout_width="wrap_content"
+			    android:layout_height="20dip"
+	            android:text="@string/all_bonus"
+	        	android:textSize="10sp"
+	            />
+	        
+	    </LinearLayout>
+	</LinearLayout>
+	
+</LinearLayout>

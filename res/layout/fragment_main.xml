@@ -10,13 +10,30 @@
 	android:orientation="vertical"
     android:background="#FFFFFF" >
 
-    <TextView
-        android:id="@+id/display"
-        android:text="@string/hello_world" 
+    <LinearLayout
+        android:layout_width="match_parent"
+	    android:layout_height="0dip"
+        android:layout_weight="1"
+		android:orientation="horizontal">
+	    <Spinner
+	    	android:id="@+id/roll_selector"
+	        android:layout_width="0dip"
+        	android:layout_weight="1"
+		    android:layout_height="wrap_content"
+		    />
+	    <Button
+		    android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:onClick="add_pattern"
+	        android:text="@string/plus_char"/>
+	</LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/display_window"
         android:layout_width="match_parent"
 	    android:layout_height="0dip"
         android:layout_weight="10"
-        android:ems="10" />
+		android:orientation="vertical"/>
 
     <LinearLayout 
         android:layout_width="match_parent"
@@ -53,7 +70,7 @@
         android:layout_weight="1"
 		android:orientation="horizontal">
         <EditText
-	        android:id="@+id/meow"
+	        android:id="@+id/input"
 	        android:layout_width="0dip"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"
@@ -62,7 +79,7 @@
         <Button 
 	        android:layout_width="wrap_content"
 	        android:layout_height="match_parent"
-	        android:onClick="submission"
+	        android:onClick="submit"
 	        android:text="@string/submit_button"
     	/>
     </LinearLayout>
