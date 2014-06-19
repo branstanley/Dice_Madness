@@ -1120,6 +1120,7 @@ containing a value of this type.
         public static final int input=0x7f050042;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
+        public static final int loader=0x7f05004c;
         public static final int middle=0x7f050012;
         public static final int name=0x7f050044;
         public static final int never=0x7f050009;
@@ -1132,7 +1133,7 @@ containing a value of this type.
         public static final int progress_horizontal=0x7f050019;
         public static final int radio=0x7f05002f;
         public static final int roll_selector=0x7f050040;
-        public static final int save_all=0x7f05004d;
+        public static final int save_all=0x7f05004e;
         public static final int scroller=0x7f05003d;
         public static final int scroller_display=0x7f05003e;
         public static final int search_badge=0x7f050032;
@@ -1149,7 +1150,7 @@ containing a value of this type.
         public static final int showCustom=0x7f050007;
         public static final int showHome=0x7f050004;
         public static final int showTitle=0x7f050006;
-        public static final int single_save=0x7f05004c;
+        public static final int single_save=0x7f05004d;
         public static final int split_action_bar=0x7f05001e;
         public static final int submit_area=0x7f050039;
         public static final int tabMode=0x7f050002;
@@ -1270,6 +1271,7 @@ containing a value of this type.
         public static final int dice_char=0x7f0a0014;
         public static final int hello_world=0x7f0a000e;
         public static final int help=0x7f0a0013;
+        public static final int loader=0x7f0a001d;
         public static final int name=0x7f0a0016;
         public static final int pattern=0x7f0a0012;
         public static final int plus_char=0x7f0a0015;

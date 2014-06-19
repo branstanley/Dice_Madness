@@ -1,9 +1,11 @@
 package madness.dice;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import android.support.v7.app.ActionBarActivity;
@@ -106,6 +108,12 @@ public class MainActivity extends ActionBarActivity
 	        case R.id.single_save:
 	            single_save();
 	            return true;
+	        case R.id.save_all:
+	            save_all();
+	            return true;
+	        case R.id.loader:
+	            loader();
+	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -124,6 +132,9 @@ public class MainActivity extends ActionBarActivity
 		}
 	}
 	protected void saver(Pattern in){
+		display_window.removeAllViews();
+		display_window.addView(roll_window);
+		TextView tv = (TextView)findViewById(R.id.display);
 		String data = in.save_pattern();
 		String file_name = "Dice_"+ in.get_saved_number();
 		
@@ -135,11 +146,6 @@ public class MainActivity extends ActionBarActivity
 			data = "" + Pattern.get_saves();
 			stream.write(data.getBytes());
 			stream.close();
-			
-			display_window.removeAllViews();
-			display_window.addView(roll_window);
-			TextView tv = (TextView)findViewById(R.id.display);
-			tv.setText("Save successful.");
 		} catch (FileNotFoundException e) {
 
 		} catch (IOException e) {
@@ -153,18 +159,19 @@ public class MainActivity extends ActionBarActivity
 		
 		try {
 			FileInputStream in = openFileInput("Dice_0");
-			String temp ;
-			byte [] t = new byte[2048];
-			in.read(t);
-			int count = Integer.parseInt(t.toString());
-			in.close();
+			if(in == null)
+				return;
 			
-			for(int i = 0;i < count;++i){
+			String temp ;
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			
+			int count = Integer.parseInt(br.readLine());
+			in.close();
+
+			for(int i = 1;i <= count;++i){
 				in = openFileInput("Dice_"+i);
-				in.read(t);
-				temp = t.toString();
-				
-				patterns.add(new Pattern(temp, get_new_scrollview(), this, true));
+				br = new BufferedReader(new InputStreamReader(in));
+				patterns.add(new Pattern(br, get_new_scrollview(), this, true));
 				
 			}
 		} catch (FileNotFoundException e) {
@@ -226,6 +233,7 @@ public class MainActivity extends ActionBarActivity
 			selection = 1;
 		display_window.removeAllViews();
 		display_window.addView(((Pattern)spinner.getSelectedItem()).get_scroller());
+		((Pattern)spinner.getSelectedItem()).refresh();
 		
 	}
 	

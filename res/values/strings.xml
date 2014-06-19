@@ -22,4 +22,5 @@
     
     <string name="single_save">Save This Pattern</string>
     <string name="save_all">Save All Patterns</string>
+    <string name="loader">Load Patterns</string>
 </resources>

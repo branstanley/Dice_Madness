@@ -1,5 +1,7 @@
 package madness.dice;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.widget.LinearLayout;
@@ -22,19 +24,26 @@ public class Pattern {
 		return saves;
 	}
 	
-	public Pattern(String in, ScrollView view, die_crafter craft, Boolean isLoading){
+	public Pattern(BufferedReader in, ScrollView view, die_crafter craft, Boolean isLoading){
 		/*
 		 * This constructor is used when building from load
 		 */
-		String [] temp = in.split("\n");
 		scroller = view;
 		scroll_box = (LinearLayout)view.findViewById(R.id.scroller_display);
 		
-		name = temp[0];
-		for(int i = 1; i < temp.length;++i){
-			Die temp_die = craft.new_die(scroll_box);
-			temp_die.load_die(temp[i]);
-			dice.add(temp_die);
+		try {
+			name = in.readLine();
+			String temp;
+			crafter = craft;
+			while((temp = in.readLine()) != null){
+				Die temp_die = craft.new_die(scroll_box);
+				temp_die.load_die(temp);
+				dice.add(temp_die);
+				scroll_box.addView(temp_die.get_die());
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -70,6 +79,11 @@ public class Pattern {
 				dice.remove(i);
 				return;
 			}
+		}
+	}
+	public void refresh(){
+		for(int i = 0; i < dice.size();++i){
+			dice.get(i).refresh();
 		}
 	}
 	

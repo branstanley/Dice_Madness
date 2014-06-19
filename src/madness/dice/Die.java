@@ -5,9 +5,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class Die{
-	String name;
-	int num_dice, dice_sides, bonus;
-	boolean bonus_is_per_roll;
+	String name = "Roll Name";
+	int num_dice = 0, dice_sides = 0, bonus = 0;
+	boolean bonus_is_per_roll = false;
 	LinearLayout dice;
 	
 	public Die(LinearLayout in){
@@ -31,6 +31,14 @@ public class Die{
 		dice_sides = Integer.parseInt(temp[2]);
 		bonus = Integer.parseInt(temp[3]);
 		bonus_is_per_roll = Boolean.parseBoolean(temp[4]);
+		
+	}
+	public void refresh(){
+		((EditText)dice.findViewById(R.id.name)).setText(name);
+		((EditText)dice.findViewById(R.id.num_dice)).setText("" + num_dice);
+		((EditText)dice.findViewById(R.id.dice_sides)).setText("" + dice_sides);
+		((EditText)dice.findViewById(R.id.bonus)).setText("" + bonus);
+		((CheckBox)dice.findViewById(R.id.all_bonus)).setChecked(bonus_is_per_roll);
 	}
 	public String roll_dice(){
 		
