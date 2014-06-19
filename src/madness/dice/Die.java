@@ -1,10 +1,12 @@
 package madness.dice;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-public class Die{
+public class Die implements TextWatcher{
 	String name = "Roll Name";
 	int num_dice = 0, dice_sides = 0, bonus = 0;
 	boolean bonus_is_per_roll = false;
@@ -12,6 +14,11 @@ public class Die{
 	
 	public Die(LinearLayout in){
 		dice = in;
+		((EditText)dice.findViewById(R.id.name)).addTextChangedListener(this);
+		((EditText)dice.findViewById(R.id.num_dice)).addTextChangedListener(this);
+		((EditText)dice.findViewById(R.id.dice_sides)).addTextChangedListener(this);
+		((EditText)dice.findViewById(R.id.bonus)).addTextChangedListener(this);
+		((CheckBox)dice.findViewById(R.id.all_bonus)).setChecked(bonus_is_per_roll);
 	}
 	
 	public LinearLayout get_die(){
@@ -40,12 +47,9 @@ public class Die{
 		((EditText)dice.findViewById(R.id.bonus)).setText("" + bonus);
 		((CheckBox)dice.findViewById(R.id.all_bonus)).setChecked(bonus_is_per_roll);
 	}
-	public String roll_dice(){
-		
+	
+	public String grab_current_values(){
 		name = ((EditText)dice.findViewById(R.id.name)).getText().toString();
-		String out =  name + "\n";
-		int total = 0, temp;
-
 		try{
 			num_dice = Integer.parseInt(((EditText)dice.findViewById(R.id.num_dice)).getText().toString());
 		}catch(Exception e){
@@ -62,7 +66,16 @@ public class Die{
 			return "Error in '" + name +"'.  Invalid bonus value: " + ((EditText)dice.findViewById(R.id.bonus)).getText().toString() + "\n";
 		}
 		bonus_is_per_roll = ((CheckBox)dice.findViewById(R.id.all_bonus)).isChecked();
+		return "";
+	}
+	public String roll_dice(){
+		String out = grab_current_values();
+		if(out != "")
+			return out;
 		
+		out =  name + "\n";
+		int total = 0, temp;
+
 		for(int i = 0; i < num_dice; ++i){
 			temp = (int)Math.ceil(Math.random() * dice_sides);
 			if(bonus_is_per_roll)
@@ -75,6 +88,25 @@ public class Die{
 			total += bonus;
 		out += " = " + total + "\n";
 		return out;
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count,
+			int after) {
+		grab_current_values();
+		
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void afterTextChanged(Editable s) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
