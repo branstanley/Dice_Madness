@@ -24,7 +24,7 @@ public class Pattern {
 		return saves;
 	}
 	
-	public Pattern(BufferedReader in, ScrollView view, die_crafter craft, Boolean isLoading){
+	public Pattern(BufferedReader in, ScrollView view, die_crafter craft){
 		/*
 		 * This constructor is used when building from load
 		 */
