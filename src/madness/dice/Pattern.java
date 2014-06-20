@@ -54,8 +54,8 @@ public class Pattern {
 		this.name = name;
 		crafter = craft;
 		
-		dice.add(crafter.new_die(scroll_box));
-		scroll_box.addView(dice.get(0).get_die());
+		//dice.add(crafter.new_die(scroll_box));
+		//scroll_box.addView(dice.get(0).get_die());
 		
 	}
 	

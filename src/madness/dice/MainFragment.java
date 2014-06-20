@@ -14,6 +14,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -58,8 +59,14 @@ public class MainFragment extends Fragment{
 		
 		setRetainInstance(true);
 		
+	}
+
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		View view = inflater.inflate(R.layout.fragment_main, container, false);
 		if(spinner == null){//the drop down menu
-			spinner = (Spinner)link.get_view(R.id.roll_selector);
+			spinner = (Spinner)view.findViewById(R.id.roll_selector);
 			spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) { 
 			    	if(selection == 1)
@@ -72,23 +79,21 @@ public class MainFragment extends Fragment{
 			}); 
 		}
 		if(display_window == null)//the part that changes
-			display_window = (LinearLayout)link.get_view(R.id.display_window);
+			display_window = (LinearLayout)view.findViewById(R.id.display_window);
 		if(patterns == null){
 			patterns = link.get_pattern_adapter();
-			patterns.add(new Pattern("No Pattern", link.get_new_scrollview(display_window), link.get_die_crafter()));
+			patterns.add(new Pattern("No Pattern", (ScrollView)inflater.inflate(R.layout.display, display_window, false), link.get_die_crafter())); // FIX
 		}
 		if(roll_window == null)
-			roll_window = (LinearLayout)link.get_inflater().inflate(R.layout.display_diddly, display_window, false);
+			roll_window = (LinearLayout)inflater.inflate(R.layout.display_diddly, display_window, false);
 		
 		if(display_window.getChildCount() == 0){
 			selection = 0;
 			display_window.addView(roll_window);
 		}
 		spinner.setAdapter(patterns);
+		return view;
 	}
-
-	
-	
 	
 
 	/*

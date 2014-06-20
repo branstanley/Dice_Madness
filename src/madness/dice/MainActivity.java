@@ -111,30 +111,10 @@ public class MainActivity extends ActionBarActivity
 	}
 	
 	
-	
-	
 	public Die new_die(LinearLayout in){
 		return new Die((LinearLayout)getLayoutInflater().inflate(R.layout.new_die, in, false));
 	}
 	
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-		
-		
-		public PlaceholderFragment() {
-		}
-		
-		
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
-			return rootView;
-		}
-	}
 
 	
 	/*
@@ -142,7 +122,7 @@ public class MainActivity extends ActionBarActivity
 	 */
 	@Override
 	public ScrollView get_new_scrollview(LinearLayout display_window){
-		return (ScrollView)getLayoutInflater().inflate(R.layout.display, display_window, false);
+		return null;
 	}
 	
 	@Override
