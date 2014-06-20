@@ -47,6 +47,10 @@ public class MainFragment extends Fragment{
 	Spinner spinner = null;
 	LinearLayout roll_window = null;
 	
+	public MainFragment(){
+		
+	}
+	
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
@@ -56,15 +60,14 @@ public class MainFragment extends Fragment{
 	@Override
 	public void onCreate(Bundle state){
 		super.onCreate(state);
-		
-		setRetainInstance(true);
-		
 	}
 
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
+		if(view == null)
+			System.exit(-1);
 		if(spinner == null){//the drop down menu
 			spinner = (Spinner)view.findViewById(R.id.roll_selector);
 			spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -148,7 +151,7 @@ public class MainFragment extends Fragment{
 			for(int i = 1;i <= count;++i){
 				in = link.open_input("Dice_"+i);
 				br = new BufferedReader(new InputStreamReader(in));
-				patterns.add(new Pattern(br, link.get_new_scrollview(display_window), link.get_die_crafter()));
+				patterns.add(new Pattern(br, (ScrollView)link.get_inflater().inflate(R.layout.display, display_window, false), link.get_die_crafter()));
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -204,13 +207,13 @@ public class MainFragment extends Fragment{
 	 * Patterns and Dice specific stuff
 	 */
 	
-	public void add_dice(View view){
+	public void add_dice(){
 		((Pattern)spinner.getSelectedItem()).add_dice();
 	}
 	public void remove_dice(View view){
 		((Pattern)spinner.getSelectedItem()).remove_dice((LinearLayout)(view.getParent().getParent()));
 	}
-	public void add_pattern(View view){
+	public void add_pattern(){
 		selection = 1;
 		
 		Pattern temp = new Pattern("Pattern " + patterns.getCount(), (ScrollView)link.get_inflater().inflate(R.layout.display, display_window, false), link.get_die_crafter());

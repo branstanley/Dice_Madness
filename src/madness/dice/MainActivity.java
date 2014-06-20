@@ -14,8 +14,9 @@ import madness.dice.Pattern.die_crafter;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -53,17 +54,26 @@ public class MainActivity extends ActionBarActivity
 		setContentView(R.layout.activity_main); 
 		
 		FragmentManager fm = getFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
 		main_frag = (MainFragment) fm.findFragmentByTag(MAIN_TASK_FRAGMENT);
 		
 		if(main_frag == null){
-			main_frag = new MainFragment();
+			main_frag = new MainFragment(); 
 			fm.beginTransaction().add(main_frag, MAIN_TASK_FRAGMENT).commit();
-		}
-		
+			ft.add(R.id.container, main_frag);
+			ft.commit();
+		}else
+			ft.add(R.id.container, main_frag);
 	}
 	protected void onResume(){
 		super.onResume();
-		
+
+		if(main_frag == null){
+			FragmentManager fm = getFragmentManager();
+			FragmentTransaction ft = fm.beginTransaction();
+			main_frag = (MainFragment) fm.findFragmentByTag(MAIN_TASK_FRAGMENT);
+			ft.add(R.id.container, main_frag);
+		}
 	}
 	
 	/*
@@ -115,6 +125,15 @@ public class MainActivity extends ActionBarActivity
 		return new Die((LinearLayout)getLayoutInflater().inflate(R.layout.new_die, in, false));
 	}
 	
+	public void add_dice(View view){
+		main_frag.add_dice();
+	}
+	public void remove_dice(View view){
+		main_frag.remove_dice(view);
+	}
+	public void add_pattern(View view){
+		main_frag.add_pattern();
+	}
 
 	
 	/*
@@ -144,8 +163,7 @@ public class MainActivity extends ActionBarActivity
 	}
 	@Override
 	public die_crafter get_die_crafter() {
-		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 	@Override
 	public ArrayAdapter<Pattern> get_pattern_adapter() {
