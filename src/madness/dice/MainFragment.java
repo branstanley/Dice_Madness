@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,9 +61,9 @@ public class MainFragment extends Fragment{
 	@Override
 	public void onCreate(Bundle state){
 		super.onCreate(state);
-	}
-
+	}	
 	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
@@ -188,6 +189,9 @@ public class MainFragment extends Fragment{
 			selection = 0;
 			display_window.removeAllViews();
 			display_window.addView(roll_window);
+			TextView tv = (TextView)link.get_view(R.id.display);
+			tv.setText("");
+			
 		}
 		else{
 			((EditText)roll_window.findViewById(R.id.display)).setText(((Pattern)spinner.getSelectedItem()).roll());
@@ -231,16 +235,18 @@ public class MainFragment extends Fragment{
 	/*
 	 * 
 	 */
-	public void submit(View view){
-		Spinner spinner = (Spinner)link.get_view(R.id.roll_selector);
-		
-		if(selection == 1){
-			if(spinner.getSelectedItem() == patterns.getItem(0)){
-				EditText display = (EditText)link.get_view(R.id.display);
-				//EditText input = (EditText)findViewById(R.id.input);
-				//display.setText(input.getText().toString());
-			}
+	public void submit(BufferedReader in){
+		selection = 0;
+		display_window.removeAllViews();
+		display_window.addView(roll_window);
+		TextView tv = (TextView)link.get_view(R.id.display);
+		try {
+			
+			tv.setText( in.readLine());
+		} catch (Exception e) {
+			tv.setText("I don't fucking know.");
 		}
+		
 	
 	}
 }

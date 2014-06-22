@@ -19,6 +19,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,11 +41,12 @@ public class MainActivity extends ActionBarActivity
 	/*
 	 * Static Variables
 	 */
-	private static final String MAIN_TASK_FRAGMENT = "main_fragment"; 
+	private static final String DATA_TASK_FRAGMENT = "data_fragment"; 
 	/*
 	 * Member Variables
 	 */
-	private MainFragment main_frag;
+	private MainFragment main_frag = null;
+	private DataFragment data_frag;
 	/*
 	 * Member Methods
 	 */
@@ -55,25 +57,41 @@ public class MainActivity extends ActionBarActivity
 		
 		FragmentManager fm = getFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
-		main_frag = (MainFragment) fm.findFragmentByTag(MAIN_TASK_FRAGMENT);
+		data_frag = (DataFragment) fm.findFragmentByTag(DATA_TASK_FRAGMENT);
 		
 		if(main_frag == null){
 			main_frag = new MainFragment(); 
-			fm.beginTransaction().add(main_frag, MAIN_TASK_FRAGMENT).commit();
+			//fm.beginTransaction().add(main_frag, MAIN_TASK_FRAGMENT).commit();
+			
 			ft.add(R.id.container, main_frag);
 			ft.commit();
-		}else
-			ft.add(R.id.container, main_frag);
+		}
+		if(data_frag == null){
+			data_frag = new DataFragment();
+			fm.beginTransaction().add(data_frag, DATA_TASK_FRAGMENT).commit();
+			data_frag.add_pattern("Fuck yo momma");
+		}
+		
 	}
 	protected void onResume(){
 		super.onResume();
 
-		if(main_frag == null){
-			FragmentManager fm = getFragmentManager();
-			FragmentTransaction ft = fm.beginTransaction();
-			main_frag = (MainFragment) fm.findFragmentByTag(MAIN_TASK_FRAGMENT);
-			ft.add(R.id.container, main_frag);
-		}
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+	    //No call for super(). Bug on API Level > 11.
+	}
+	
+	protected void onStop(){
+		super.onStop();
+		
+
+		FragmentManager fragmentManager = getFragmentManager();
+		
+		if(main_frag != null)
+			fragmentManager.beginTransaction().remove(main_frag).commit();
+		
 	}
 	
 	/*
@@ -132,7 +150,7 @@ public class MainActivity extends ActionBarActivity
 		main_frag.remove_dice(view);
 	}
 	public void add_pattern(View view){
-		main_frag.add_pattern();
+		main_frag.add_pattern(); 
 	}
 
 	
@@ -168,6 +186,11 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	public ArrayAdapter<Pattern> get_pattern_adapter() {
 		return new ArrayAdapter<Pattern>(this, android.R.layout.simple_spinner_item);
+	}
+	
+	
+	public void submit(View view){
+		main_frag.submit(data_frag.get_pattern_data(0));
 	}
 
 }
