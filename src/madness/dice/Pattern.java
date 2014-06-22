@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-public class Pattern {
+public class Pattern implements Die.updater{
 	/*
 	 * This class holds a pattern of dice.
 	 */
@@ -17,27 +17,32 @@ public class Pattern {
 	LinearLayout scroll_box;
 	die_crafter crafter;
 	
-	int saved_number = -1;
+	int saved_number = -1, link_number = -1;
 	static int saves = 0;
 	
 	public static int get_saves(){
 		return saves;
 	}
 	
-	public Pattern(BufferedReader in, ScrollView view, die_crafter craft){
+	public Pattern(BufferedReader in, ScrollView view, die_crafter craft, int linker_number){
 		/*
 		 * This constructor is used when building from load
 		 */
+		link_number = linker_number;
 		scroller = view;
 		scroll_box = (LinearLayout)view.findViewById(R.id.scroller_display);
+		String [] temp;
+		String temp2;
 		
 		try {
-			name = in.readLine();
-			String temp;
+			temp  = in.readLine().split(",");
+			name = temp[0];
+			saved_number = Integer.parseInt(temp[1]);
+			
 			crafter = craft;
-			while((temp = in.readLine()) != null){
+			while((temp2 = in.readLine()) != null){
 				Die temp_die = craft.new_die(scroll_box);
-				temp_die.load_die(temp);
+				temp_die.load_die(temp2);
 				dice.add(temp_die);
 				scroll_box.addView(temp_die.get_die());
 			}
@@ -69,17 +74,21 @@ public class Pattern {
 	}
 	public void add_dice(){
 		Die temp = crafter.new_die(scroll_box);
+		temp.set_updater(this);
 		dice.add(temp);
 		scroll_box.addView(temp.get_die());
+		crafter.update_pattern(save_pattern(), link_number);
 	}
 	public void remove_dice(LinearLayout in){
 		scroll_box.removeView(in);
 		for(int i = 0; i < dice.size();++i){
 			if(dice.get(i).dice == in){
 				dice.remove(i);
+				crafter.update_pattern(save_pattern(), link_number);
 				return;
 			}
 		}
+		crafter.update_pattern(save_pattern(), link_number);
 	}
 	public void refresh(){
 		for(int i = 0; i < dice.size();++i){
@@ -92,7 +101,7 @@ public class Pattern {
 	}
 	
 	public String save_pattern(){
-		String temp = name + "\n";
+		String temp = name + "," + saved_number +"\n";
 		for(int i = 0; i < dice.size(); ++i){
 			temp += dice.get(i).get_save_string() + "\n";
 		}
@@ -113,8 +122,13 @@ public class Pattern {
 		return name;
 	}
 	
+	public void update(){
+		crafter.update_pattern(save_pattern(), link_number);
+	}
+	
 
 	public interface die_crafter{
 		Die new_die(LinearLayout in);
+		public void update_pattern(String in, int link_num);
 	}
 }

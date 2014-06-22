@@ -7,13 +7,16 @@ import java.util.ArrayList;
 import madness.dice.MainFragment.main_communication;
 import android.app.Activity;
 import android.app.Fragment;
-import android.os.Bundle;
+import android.os.Bundle; 
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 public class DataFragment extends Fragment{
 	ArrayList<String>  data = new ArrayList<String> ();
-	String whatever = null;
 	
+	public DataFragment(){
+		
+	}
 	
 	@Override
 	public void onAttach(Activity activity){
@@ -31,15 +34,25 @@ public class DataFragment extends Fragment{
 		super.onCreate(state);
 		setRetainInstance(true);
 	}
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		Log.i("Faggid","fdsadsadsafdghjgfdsaghmfdsgsgmnhgfdnhjmhgfdshgfdggfbfdbvvbcxvcxvcxvcbgfd");
+	}
 	
 	public void add_pattern(String in){
 		data.add(in);
-		whatever = in;
+	}
+	public void update(String in, int number){
+		data.set(number, in);
 	}
 	
 	public BufferedReader get_pattern_data(int pos){
-		//return new BufferedReader(new StringReader(data.get(pos)));
-		return new BufferedReader(new StringReader(whatever));
+		return new BufferedReader(new StringReader(data.get(pos)));
+	}
+	
+	public int size(){
+		return data.size();
 	}
 	
 

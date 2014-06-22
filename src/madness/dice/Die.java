@@ -2,6 +2,7 @@ package madness.dice;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -11,6 +12,13 @@ public class Die implements TextWatcher{
 	int num_dice = 0, dice_sides = 0, bonus = 0;
 	boolean bonus_is_per_roll = false;
 	LinearLayout dice;
+	updater update;
+	
+	Boolean refresh_flag = false;
+	
+	public interface updater{
+		void update();
+	}
 	
 	public Die(LinearLayout in){
 		dice = in;
@@ -19,6 +27,11 @@ public class Die implements TextWatcher{
 		((EditText)dice.findViewById(R.id.dice_sides)).addTextChangedListener(this);
 		((EditText)dice.findViewById(R.id.bonus)).addTextChangedListener(this);
 		((CheckBox)dice.findViewById(R.id.all_bonus)).setChecked(bonus_is_per_roll);
+		
+	}
+	
+	public void set_updater(updater in){
+		update = in;
 	}
 	
 	public LinearLayout get_die(){
@@ -41,11 +54,13 @@ public class Die implements TextWatcher{
 		
 	}
 	public void refresh(){
+		refresh_flag = true;
 		((EditText)dice.findViewById(R.id.name)).setText(name);
 		((EditText)dice.findViewById(R.id.num_dice)).setText("" + num_dice);
 		((EditText)dice.findViewById(R.id.dice_sides)).setText("" + dice_sides);
 		((EditText)dice.findViewById(R.id.bonus)).setText("" + bonus);
 		((CheckBox)dice.findViewById(R.id.all_bonus)).setChecked(bonus_is_per_roll);
+		refresh_flag = false;
 	}
 	
 	public String grab_current_values(){
@@ -93,7 +108,6 @@ public class Die implements TextWatcher{
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count,
 			int after) {
-		grab_current_values();
 		
 	}
 
@@ -105,8 +119,12 @@ public class Die implements TextWatcher{
 
 	@Override
 	public void afterTextChanged(Editable s) {
-		// TODO Auto-generated method stub
-		
+		if(!refresh_flag){
+			grab_current_values();
+			if(update == null)
+				Log.i("Error","fucking update is null somehow");
+			update.update();
+		}
 	}
 	
 }

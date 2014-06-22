@@ -25,7 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class MainFragment extends Fragment{
-	
+	static int test = 0;
 	static interface main_communication{
 		LayoutInflater get_inflater();
 		View get_view(int id);
@@ -33,7 +33,8 @@ public class MainFragment extends Fragment{
 		FileOutputStream open_output(String in) throws FileNotFoundException;
 		FileInputStream open_input(String in) throws FileNotFoundException;
 		Pattern.die_crafter get_die_crafter();
-		ArrayAdapter<Pattern> get_pattern_adapter();
+		ArrayAdapter<Pattern> get_pattern_adapter(View view, LinearLayout in);
+		void add_pattern(String in);
 	}
 	
 	/*
@@ -42,11 +43,14 @@ public class MainFragment extends Fragment{
 	main_communication link;
 	
 	protected int selection = 0;  //0 is roll page, 1 is Pattern, 2 is Help
+	int penis = 0;
+	
 	
 	LinearLayout display_window = null;
 	ArrayAdapter<Pattern> patterns = null;
 	Spinner spinner = null;
 	LinearLayout roll_window = null;
+	View view = null;
 	
 	public MainFragment(){
 		
@@ -62,11 +66,20 @@ public class MainFragment extends Fragment{
 	public void onCreate(Bundle state){
 		super.onCreate(state);
 	}	
-	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+	}
+	@Override
+	public void onStop(){
+		super.onStop();
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		View view = inflater.inflate(R.layout.fragment_main, container, false);
+		if(penis == 0)
+			penis = ++selection;
+		view = inflater.inflate(R.layout.fragment_main, container, false);
 		if(view == null)
 			System.exit(-1);
 		if(spinner == null){//the drop down menu
@@ -84,10 +97,10 @@ public class MainFragment extends Fragment{
 		}
 		if(display_window == null)//the part that changes
 			display_window = (LinearLayout)view.findViewById(R.id.display_window);
-		if(patterns == null){
-			patterns = link.get_pattern_adapter();
-			patterns.add(new Pattern("No Pattern", (ScrollView)inflater.inflate(R.layout.display, display_window, false), link.get_die_crafter())); // FIX
-		}
+		
+		if(patterns == null)
+			patterns = link.get_pattern_adapter(view, display_window);
+		
 		if(roll_window == null)
 			roll_window = (LinearLayout)inflater.inflate(R.layout.display_diddly, display_window, false);
 		
@@ -95,7 +108,8 @@ public class MainFragment extends Fragment{
 			selection = 0;
 			display_window.addView(roll_window);
 		}
-		spinner.setAdapter(patterns);
+		Log.i("Something dumb","This is instance number: " + penis);
+		spinner.setAdapter(link.get_pattern_adapter(view, display_window));
 		return view;
 	}
 	
@@ -152,7 +166,7 @@ public class MainFragment extends Fragment{
 			for(int i = 1;i <= count;++i){
 				in = link.open_input("Dice_"+i);
 				br = new BufferedReader(new InputStreamReader(in));
-				patterns.add(new Pattern(br, (ScrollView)link.get_inflater().inflate(R.layout.display, display_window, false), link.get_die_crafter()));
+				patterns.add(new Pattern(br, (ScrollView)link.get_inflater().inflate(R.layout.display, display_window, false), link.get_die_crafter(), i)); //fix this
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -219,15 +233,21 @@ public class MainFragment extends Fragment{
 	}
 	public void add_pattern(){
 		selection = 1;
+		String TEMP = "Pattern " + spinner.getCount();
+		link.add_pattern(TEMP);
+		patterns = link.get_pattern_adapter(view, display_window);
+		spinner.setAdapter(patterns);
+		
+		
+		/*
 		
 		Pattern temp = new Pattern("Pattern " + patterns.getCount(), (ScrollView)link.get_inflater().inflate(R.layout.display, display_window, false), link.get_die_crafter());
 		patterns.add(temp);
+		*/
 		display_window.removeAllViews();
+		spinner.setSelection(spinner.getCount()-1);
 		
-		spinner.setAdapter(patterns);
-		spinner.setSelection(patterns.getCount()-1);
-		
-		display_window.addView(temp.get_scroller());
+		display_window.addView(((Pattern)spinner.getSelectedItem()).get_scroller());
 	}
 	
 	

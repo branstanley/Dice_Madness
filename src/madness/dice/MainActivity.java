@@ -56,20 +56,26 @@ public class MainActivity extends ActionBarActivity
 		setContentView(R.layout.activity_main); 
 		
 		FragmentManager fm = getFragmentManager();
-		FragmentTransaction ft = fm.beginTransaction();
-		data_frag = (DataFragment) fm.findFragmentByTag(DATA_TASK_FRAGMENT);
 		
 		if(main_frag == null){
 			main_frag = new MainFragment(); 
 			//fm.beginTransaction().add(main_frag, MAIN_TASK_FRAGMENT).commit();
 			
-			ft.add(R.id.container, main_frag);
-			ft.commit();
+			fm.beginTransaction().add(R.id.container, main_frag).commit();
 		}
+		
+		
+		data_frag = (DataFragment) fm.findFragmentByTag(DATA_TASK_FRAGMENT);
+		
 		if(data_frag == null){
 			data_frag = new DataFragment();
-			fm.beginTransaction().add(data_frag, DATA_TASK_FRAGMENT).commit();
-			data_frag.add_pattern("Fuck yo momma");
+			fm.beginTransaction().add(data_frag, DATA_TASK_FRAGMENT ).commit();
+			fm.executePendingTransactions();
+			data_frag.add_pattern("No Pattern,-1");
+			Log.i("Something", "I Better only see this once ever.");
+			data_frag = (DataFragment) fm.findFragmentByTag(DATA_TASK_FRAGMENT);
+			if(data_frag == null)
+				Log.i("Something", "Fuck you");
 		}
 		
 	}
@@ -80,18 +86,17 @@ public class MainActivity extends ActionBarActivity
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
+		if(outState == null)
+			outState = new Bundle();
+		super.onSaveInstanceState(outState);
 	    //No call for super(). Bug on API Level > 11.
 	}
-	
-	protected void onStop(){
-		super.onStop();
-		
+	@Override
+	protected void onPause(){
+		super.onPause();
 
-		FragmentManager fragmentManager = getFragmentManager();
-		
-		if(main_frag != null)
-			fragmentManager.beginTransaction().remove(main_frag).commit();
-		
+		Log.i("onStop","moop");
+		getFragmentManager().beginTransaction().remove(main_frag).commit();
 	}
 	
 	/*
@@ -183,14 +188,31 @@ public class MainActivity extends ActionBarActivity
 	public die_crafter get_die_crafter() {
 		return this;
 	}
+	
 	@Override
-	public ArrayAdapter<Pattern> get_pattern_adapter() {
-		return new ArrayAdapter<Pattern>(this, android.R.layout.simple_spinner_item);
+	public ArrayAdapter<Pattern> get_pattern_adapter(View view, LinearLayout in) {
+		ArrayAdapter<Pattern> temp = new ArrayAdapter<Pattern>(this, android.R.layout.simple_spinner_item);
+		for(int i = 0; i < data_frag.size();++i){
+			temp.add(new Pattern(data_frag.get_pattern_data(i), (ScrollView)getLayoutInflater().inflate(R.layout.display, in, false), this, i));
+		}
+		Log.i("get_pattern_adapter","Size: "+ data_frag.size());
+		return temp;
 	}
 	
 	
 	public void submit(View view){
 		main_frag.submit(data_frag.get_pattern_data(0));
+	}
+	@Override
+	public void update_pattern(String in, int link_num) {
+		data_frag.update(in, link_num);
+		
+	}
+	@Override
+	public void add_pattern(String in) {
+		data_frag.add_pattern(in + "," + "-1");
+		getFragmentManager().executePendingTransactions();
+		
 	}
 
 }
