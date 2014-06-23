@@ -54,9 +54,6 @@ public class DataFragment extends Fragment{
 		return data.size();
 	}
 	
-	public void loader(){
-		
-	}
 	
 
 }

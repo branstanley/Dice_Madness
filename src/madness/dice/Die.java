@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class Die implements TextWatcher{
-	String name = "Roll Name";
+	protected String name = "Roll Name";
 	int num_dice = 0, dice_sides = 0, bonus = 0;
 	boolean bonus_is_per_roll = false;
 	LinearLayout dice;
@@ -46,7 +46,7 @@ public class Die implements TextWatcher{
 	
 	public void load_die(String in){
 		String [] temp = in.split(",");
-		name = temp[0];
+		name = "" + temp[0];
 		num_dice = Integer.parseInt(temp[1]);
 		dice_sides = Integer.parseInt(temp[2]);
 		bonus = Integer.parseInt(temp[3]);
@@ -55,7 +55,10 @@ public class Die implements TextWatcher{
 	}
 	public void refresh(){
 		refresh_flag = true;
+		Log.i("refresh", "Check: "+ name);
+		
 		((EditText)dice.findViewById(R.id.name)).setText(name);
+		
 		((EditText)dice.findViewById(R.id.num_dice)).setText("" + num_dice);
 		((EditText)dice.findViewById(R.id.dice_sides)).setText("" + dice_sides);
 		((EditText)dice.findViewById(R.id.bonus)).setText("" + bonus);
@@ -121,8 +124,6 @@ public class Die implements TextWatcher{
 	public void afterTextChanged(Editable s) {
 		if(!refresh_flag){
 			grab_current_values();
-			if(update == null)
-				Log.i("Error","fucking update is null somehow");
 			update.update();
 		}
 	}

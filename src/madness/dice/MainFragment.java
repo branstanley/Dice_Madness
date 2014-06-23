@@ -159,14 +159,15 @@ public class MainFragment extends Fragment{
 			
 			String temp ;
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-			
 			int count = Integer.parseInt(br.readLine());
 			in.close();
 
 			for(int i = 1;i <= count;++i){
 				in = link.open_input("Dice_"+i);
 				br = new BufferedReader(new InputStreamReader(in));
-				patterns.add(new Pattern(br, (ScrollView)link.get_inflater().inflate(R.layout.display, display_window, false), link.get_die_crafter(), i)); //fix this
+				Pattern t = new Pattern(br, (ScrollView)link.get_inflater().inflate(R.layout.display, display_window, false), link.get_die_crafter(), i);
+				link.add_pattern(t.save_pattern());
+				patterns.add(t); //fix this
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

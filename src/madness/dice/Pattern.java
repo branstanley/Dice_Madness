@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -46,6 +47,7 @@ public class Pattern implements Die.updater{
 				temp_die.set_updater(this);
 				dice.add(temp_die);
 				scroll_box.addView(temp_die.get_die());
+				temp_die.refresh();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
