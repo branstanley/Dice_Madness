@@ -37,7 +37,6 @@ public class DataFragment extends Fragment{
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-		Log.i("Faggid","fdsadsadsafdghjgfdsaghmfdsgsgmnhgfdnhjmhgfdshgfdggfbfdbvvbcxvcxvcxvcbgfd");
 	}
 	
 	public void add_pattern(String in){
@@ -53,6 +52,10 @@ public class DataFragment extends Fragment{
 	
 	public int size(){
 		return data.size();
+	}
+	
+	public void loader(){
+		
 	}
 	
 

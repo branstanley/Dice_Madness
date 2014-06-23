@@ -43,6 +43,7 @@ public class Pattern implements Die.updater{
 			while((temp2 = in.readLine()) != null){
 				Die temp_die = craft.new_die(scroll_box);
 				temp_die.load_die(temp2);
+				temp_die.set_updater(this);
 				dice.add(temp_die);
 				scroll_box.addView(temp_die.get_die());
 			}
@@ -52,17 +53,6 @@ public class Pattern implements Die.updater{
 		}
 	}
 	
-	public Pattern(String name, ScrollView in, die_crafter craft){
-		scroller = in;
-		scroll_box = (LinearLayout)in.findViewById(R.id.scroller_display);
-		
-		this.name = name;
-		crafter = craft;
-		
-		//dice.add(crafter.new_die(scroll_box));
-		//scroll_box.addView(dice.get(0).get_die());
-		
-	}
 	
 	public String roll(){
 		String temp = "";
