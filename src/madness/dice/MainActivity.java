@@ -162,10 +162,6 @@ public class MainActivity extends ActionBarActivity
 	/*
 	 * main_communication interface
 	 */
-	@Override
-	public ScrollView get_new_scrollview(LinearLayout display_window){
-		return null;
-	}
 	
 	@Override
 	public LayoutInflater get_inflater() {
@@ -213,6 +209,10 @@ public class MainActivity extends ActionBarActivity
 		data_frag.add_pattern(in + "," + "-1");
 		getFragmentManager().executePendingTransactions();
 		
+	}
+	@Override
+	public ArrayAdapter<String> get_string_adapter() {
+		return new ArrayAdapter<String>(this, R.layout.roll_numbers);
 	}
 
 }

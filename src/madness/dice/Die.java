@@ -99,12 +99,12 @@ public class Die implements TextWatcher{
 			if(bonus_is_per_roll)
 				temp += bonus;
 			
-			out += " " + temp;
+			out += temp + " " ;
 			total += temp;
 		}
 		if(!bonus_is_per_roll)
 			total += bonus;
-		out += " = " + total + "\n";
+		out += "\n" + total;
 		return out;
 	}
 

@@ -29,7 +29,6 @@ public class MainFragment extends Fragment{
 	static interface main_communication{
 		LayoutInflater get_inflater();
 		View get_view(int id);
-		ScrollView get_new_scrollview(LinearLayout display_window);
 		FileOutputStream open_output(String in) throws FileNotFoundException;
 		FileInputStream open_input(String in) throws FileNotFoundException;
 		Pattern.die_crafter get_die_crafter();
@@ -209,7 +208,8 @@ public class MainFragment extends Fragment{
 			
 		}
 		else{
-			((EditText)roll_window.findViewById(R.id.display)).setText(((Pattern)spinner.getSelectedItem()).roll());
+			display_window.removeAllViews();
+			display_window.addView(((Pattern)spinner.getSelectedItem()).roll());
 		}
 	}
 	public void pattern(){

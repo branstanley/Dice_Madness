@@ -3,10 +3,16 @@ package madness.dice;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 public class Pattern implements Die.updater{
 	/*
@@ -23,6 +29,7 @@ public class Pattern implements Die.updater{
 	
 	public static int get_saves(){
 		return saves;
+		
 	}
 	
 	public Pattern(BufferedReader in, ScrollView view, die_crafter craft, int linker_number){
@@ -56,14 +63,39 @@ public class Pattern implements Die.updater{
 	}
 	
 	
-	public String roll(){
+	public ScrollView roll(){
 		String temp = "";
+		ScrollView scroller = (ScrollView)crafter.get_inflater().inflate(R.layout.display, (LinearLayout)this.scroller.getParent(), true);
+		LinearLayout scroll_box = (LinearLayout)scroller.findViewById(R.id.scroller_display);
 		
-		for(int i = 0; i < dice.size(); ++i)
-			temp += dice.get(i).roll_dice() + "\n";
+		for(int i = 0; i < dice.size(); ++i){
+			/*
+			 * Each die
+			 */
+			LinearLayout wrapper = (LinearLayout)crafter.get_inflater().inflate(R.layout.roll_wrapper, scroll_box, true);
+			temp = dice.get(i).roll_dice();
+			String [] t = temp.split("\n");
+			
+			((TextView)wrapper.findViewById(R.id.title)).setText(t[0]);
+			
+			ArrayAdapter<String> a = crafter.get_string_adapter();
+			
+			GridView gv = (GridView)wrapper.findViewById(R.id.roll_grid);
+			
+			for(String split : t[1].split(" ")){
+				//TextView tv = ((TextView)crafter.get_inflater().inflate(R.layout.roll_numbers, gv, false));
+				//tv.setText(split);
+				a.add(split);//tv);
+			}
+			
+			gv.setAdapter(a);
+			((TextView)wrapper.findViewById(R.id.total)).setText(t[2]);
+		}
 		
-		return temp;
+		return scroller;
 	}
+	
+	
 	public void add_dice(){
 		Die temp = crafter.new_die(scroll_box);
 		temp.set_updater(this);
@@ -122,5 +154,9 @@ public class Pattern implements Die.updater{
 	public interface die_crafter{
 		Die new_die(LinearLayout in);
 		public void update_pattern(String in, int link_num);
+		//public LinearLayout craft_roll(String in);
+		//public LinearLayout craft_roll_wrapper();
+		LayoutInflater get_inflater();
+		ArrayAdapter<String> get_string_adapter();
 	}
 }
